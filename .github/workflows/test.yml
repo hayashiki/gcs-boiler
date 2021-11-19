@@ -17,7 +17,8 @@ jobs:
       - name: Set up google cloud storage emulator
         run: |
           docker run -d --name fake-gcs-server \
-          -v ${{ github.workspace }}/docker/fgs/data:/data \
+          -v ${{ github.workspace }}/init_buckets:/data:/data \
+          -v ${{ github.workspace }}/storage:/storage \
           -p 4443:4443 \
           fsouza/fake-gcs-server
       - name: Test
