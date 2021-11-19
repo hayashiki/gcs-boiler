@@ -16,10 +16,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up google cloud storage emulator
         run: |
-          docker run -d --name fake-gcs-server \
-          -v ${{ github.workspace }}/init_buckets:/data:/data \
-          -v ${{ github.workspace }}/storage:/storage \
+          sudo docker run -d --name fake-gcs-server \
+          -v $PWD/init_buckets:/data \
           -p 4443:4443 \
-          fsouza/fake-gcs-server
+          fsouza/fake-gcs-server --scheme http --public-host localhost
       - name: Test
         run: go test ./...
