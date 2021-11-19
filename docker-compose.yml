@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+#  今回は外部サービスしかDocker化しない
+#  app:
+#    build:
+#      context: "."
+#      dockerfile: cmd/web/dev.Dockerfile
+#    tty: true
+#    environment:
+#      GCP_PROJECT: local
+#      STORAGE_EMULATOR_HOST: http://gcs:4443
+#    depends_on:
+#      - gcs
+#    volumes:
+#      - .:/app
+#    ports:
+#      - 8080:8080
+  gcs:
+    image: fsouza/fake-gcs-server
+    tty: true
+    stdin_open: true
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - 4443:4443
+    command: --scheme http --public-host localhost
+    volumes:
+      - ./init_buckets:/data
+      - ./storage:/storage
